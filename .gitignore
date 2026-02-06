@@ -1,0 +1,16 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+
+# Archivos de usuario
+*.user
+*.suo
+*.csproj.user
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
