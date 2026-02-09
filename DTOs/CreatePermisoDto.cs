@@ -1,8 +1,5 @@
-using System;
-
 namespace ComprasVentas.DTOs;
-
-public class CreatePermisoDto
+public record CreatePermisoDto
 {
     public string Nombre {get; set;} = string.Empty;
     public string? Recurso {get; set;}

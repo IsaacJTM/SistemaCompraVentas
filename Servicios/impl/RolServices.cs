@@ -1,36 +1,84 @@
+using ComprasVentas.Builder;
 using ComprasVentas.DTOs;
 using ComprasVentas.Models;
 using ComprasVentas.Repository;
 
 namespace ComprasVentas.Servicios.impl;
 
-public class RolServices : IRolServices
+public class RolServices
+(
+    RolRepository rolRepository, 
+    PermisoRepository permisoRepository
+) : IRolServices
 {
-    private readonly RolRepository _rolRepository;
+    private readonly RolRepository _rolRepository = rolRepository;
+    private readonly PermisoRepository _permisoRepository = permisoRepository;
 
-    public RolServices(RolRepository rolRepository)
+    public async Task<List<RolResponseDto>> GetAllAsync()
     {
-        _rolRepository = rolRepository;
-    }
-
-    public async Task CreateAsync(CreateRolDto createRolDto)
-    {
-
-        await _rolRepository.CreateAsync(new Rol
+        var roles = await _rolRepository.GetAllAsync();
+        return [.. roles.Select(r => new RolResponseDto
         {
-            Nombre = createRolDto.Nombre,
-            Descripcion = createRolDto.Descripcion
-        });
+            Id = r.Id,
+            Nombre = r.Nombre,
+            Descripcion = r.Descripcion,
+            Permisos = r.PermisoRoles.Select(pr => new PermisoResponseDto{
+                Id = pr.Permiso.Id,
+                Nombre = pr.Permiso.Nombre
+            }).ToList()
+        })];
     }
 
-    public Task<List<Rol>> GetAllAsync()
+    public async Task<RolResponseDto?> GetByIdAsync(int id)
     {
-       return _rolRepository.GetAllAsync();
+        var rol = await _rolRepository.GetByIdAsync(id);
+        if (rol == null) return null;
+        return new RolResponseDto
+        {
+           Id = rol.Id,
+            Nombre = rol.Nombre,
+            Descripcion = rol.Descripcion,
+            Permisos = rol.PermisoRoles.Select(pr => new PermisoResponseDto{
+                Id = pr.Permiso.Id,
+                Nombre = pr.Permiso.Nombre
+            }).ToList() 
+        };
     }
 
-    public Task<Rol?> GetByIdAsync(int id)
+    public async Task<RolResponseDto> CreateAsync(CreateRolDto dto)
     {
-        return _rolRepository.GetByIdAsync(id);
+        var permisos = new List<Permiso>();
+        foreach (var permisoId in dto.PermisoIds)
+        {
+            var permiso = await _permisoRepository.GetByIdAsync(permisoId);
+            if(permiso == null) throw new Exception($"Permiso con ID {permisoId} no encontrado");
+            permisos.Add(permiso);
+        }
+        var rol = new RolBuilder()
+            .WithNombre(dto.Nombre)
+            .WithDescripcion(dto.Descripcion)
+            .WithPermisos(permisos)
+            .Build();
+        await _rolRepository.CreateAsync(rol);
+        return new RolResponseDto
+        {
+            Id = rol.Id,
+            Nombre = rol.Nombre,
+            Descripcion = rol.Descripcion,
+            Permisos = rol.PermisoRoles.Select(pr => new PermisoResponseDto{
+                Id = pr.Permiso.Id,
+                Nombre = pr.Permiso.Nombre
+            }).ToList()
+        };
+    }
+    public Task UpdateAsync(int id, CreateRolDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteAsync(int id)
+    {
+        throw new NotImplementedException();
     }
 
 }

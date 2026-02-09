@@ -11,27 +11,20 @@ public class PermisoServices : IPermisoServices
     public PermisoServices(PermisoRepository permisoRepository)
     {
         _permisoRepository = permisoRepository;
-    }   
-
-    public async Task<List<Permiso>> GetAllAsync()
-    {
-        return await _permisoRepository.GetAllAsync();
     }
 
-    public async Task<Permiso?> GetByIdAsync(int id)
+    public Task<PermisoResponseDto> CreateAsync(CreatePermisoDto permisoDto)
     {
-        return await _permisoRepository.GetByIdAsync(id);
+        throw new NotImplementedException();
     }
 
-    public async Task CreateAsync(CreatePermisoDto permisoDto)
+    public Task<List<PermisoResponseDto>> GetAllAsync()
     {
-        var permiso = new Permiso
-        {
-            Nombre = permisoDto.Nombre,
-            Recurso = permisoDto.Recurso,
-            Accion = permisoDto.Accion
-        };
-        await _permisoRepository.CreateAsync(permiso);
+        throw new NotImplementedException();
     }
-    
+
+    public Task<PermisoResponseDto?> GetByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -6,8 +6,8 @@ namespace ComprasVentas.Servicios;
 
 public interface IPermisoServices
 {
-    Task<List<Permiso>> GetAllAsync();
-    Task<Permiso?> GetByIdAsync(int id);
-    Task CreateAsync(CreatePermisoDto permisoDto);
+    Task<List<PermisoResponseDto>> GetAllAsync();
+    Task<PermisoResponseDto?> GetByIdAsync(int id);
+    Task<PermisoResponseDto> CreateAsync(CreatePermisoDto permisoDto);
 
 }

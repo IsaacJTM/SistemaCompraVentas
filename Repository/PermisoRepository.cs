@@ -4,13 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ComprasVentas.Repository;
 
-public class PermisoRepository
+public class PermisoRepository(AppDbContext context)
 {
-    private readonly AppDbContext _context;
-    public PermisoRepository(AppDbContext context)
-    {
-        _context = context;
-    }
+    //Inyección de dependencias por clase
+    private readonly AppDbContext  _context = context;
 
     public async Task<List<Permiso>> GetAllAsync()
     {
