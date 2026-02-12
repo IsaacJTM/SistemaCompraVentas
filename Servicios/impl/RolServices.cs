@@ -32,7 +32,7 @@ public class RolServices
     public async Task<RolResponseDto?> GetByIdAsync(int id)
     {
         var rol = await _rolRepository.GetByIdAsync(id);
-        if (rol == null) return null;
+        if (rol == null) throw new Exception($"Rol con ID {id} no encontrado");
         return new RolResponseDto
         {
            Id = rol.Id,
@@ -51,8 +51,8 @@ public class RolServices
         foreach (var permisoId in dto.PermisoIds)
         {
             var permiso = await _permisoRepository.GetByIdAsync(permisoId);
-            if(permiso == null) throw new Exception($"Permiso con ID {permisoId} no encontrado");
-            permisos.Add(permiso);
+            //if(permiso == null) throw new Exception($"Permiso con ID {permisoId} no encontrado");
+            if(permiso != null) permisos.Add(permiso);
         }
         var rol = new RolBuilder()
             .WithNombre(dto.Nombre)
@@ -71,9 +71,32 @@ public class RolServices
             }).ToList()
         };
     }
-    public Task UpdateAsync(int id, CreateRolDto dto)
+    public async Task<RolResponseDto> UpdateAsync(int id, CreateRolDto dto)
     {
-        throw new NotImplementedException();
+        var rol = await _rolRepository.GetByIdAsync(id);
+        if(rol == null) throw new Exception($"Rol con ID {id} no encontrado");
+        var permisos = new List<Permiso>();
+        foreach (var permisoId in dto.PermisoIds)
+        {
+            var permiso = await _permisoRepository.GetByIdAsync(permisoId);
+            if(permiso != null) permisos.Add(permiso);
+        }
+        rol.Nombre = dto.Nombre;
+        rol.Descripcion = dto.Descripcion;
+        rol.ClearPermisos();
+        var permisosIds = permisos.Select(p => p.Id);
+        rol.AddPermisos(permisosIds);
+        await _rolRepository.UpdateAsync(rol);
+        return new RolResponseDto
+        {
+            Id = rol.Id,
+            Nombre = rol.Nombre,
+            Descripcion = rol.Descripcion,
+            Permisos = rol.PermisoRoles.Select(pr => new PermisoResponseDto{
+                Id = pr.Permiso.Id,
+                Nombre = pr.Permiso.Nombre
+            }).ToList()
+        };
     }
 
     public Task DeleteAsync(int id)

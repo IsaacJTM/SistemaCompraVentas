@@ -25,4 +25,11 @@ public class Rol
             AddPermiso(permisoId);
         }
     }
+
+    public void ClearPermisos()
+    {
+        _permisoRoles.Clear();
+    }
+
+
 }
