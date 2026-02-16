@@ -99,9 +99,9 @@ public class RolServices
         };
     }
 
-    public Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        await _rolRepository.DeleteAsync(id);
     }
 
 }

@@ -9,5 +9,6 @@ public interface IPermisoServices
     Task<List<PermisoResponseDto>> GetAllAsync();
     Task<PermisoResponseDto?> GetByIdAsync(int id);
     Task<PermisoResponseDto> CreateAsync(CreatePermisoDto permisoDto);
+    Task DeleteAsync(int id);
 
 }

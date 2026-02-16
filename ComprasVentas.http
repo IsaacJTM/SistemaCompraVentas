@@ -1,6 +1,56 @@
 @ComprasVentas_HostAddress = http://localhost:5247
 
+### Rol - Obtener todos
 GET {{ComprasVentas_HostAddress}}/api/Rol
 Accept: application/json
 
-###
+### Rol - Obtener por id
+GET {{ComprasVentas_HostAddress}}/api/Rol/1
+Accept: application/json
+
+### Rol - Crear
+POST {{ComprasVentas_HostAddress}}/api/Rol
+Content-Type: application/json
+
+{
+	"Nombre": "Administrador",
+	"Descripcion": "Rol con todos los permisos",
+	"PermisoIds": [1]
+}
+
+### Rol - Actualizar
+PUT {{ComprasVentas_HostAddress}}/api/Rol/1
+Content-Type: application/json
+
+{
+	"Nombre": "Administrador Mod",
+	"Descripcion": "Descripción actualizada",
+	"PermisoIds": [1]
+}
+
+### Rol - Eliminar
+DELETE {{ComprasVentas_HostAddress}}/api/Rol/1
+
+
+### ENDPOINTS DE PERMISO
+
+### Permiso - Obtener todos
+GET {{ComprasVentas_HostAddress}}/api/Permiso
+Accept: application/json
+
+### Permiso - Obtener por id
+GET {{ComprasVentas_HostAddress}}/api/Permiso/1
+Accept: application/json
+
+### Permiso - Crear
+POST {{ComprasVentas_HostAddress}}/api/Permiso
+Content-Type: application/json
+
+{
+	"Nombre": "VerProductos",
+	"Recurso": "Productos",
+	"Accion": "Leer"
+}
+
+### Permiso - Eliminar
+DELETE {{ComprasVentas_HostAddress}}/api/Permiso/2

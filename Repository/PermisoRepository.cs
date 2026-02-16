@@ -25,4 +25,19 @@ public class PermisoRepository(AppDbContext context)
         await _context.SaveChangesAsync();
     }
 
+    public async Task DeleteAsync(int id)
+    {
+        var permiso = await GetByIdAsync(id);
+        if(permiso != null)
+        {
+            _context.Permisos.Remove(permiso);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task<Permiso?> FindByNombreAsync(string nombre)
+    {
+        return await _context.Permisos.Where(p => p.Nombre == nombre).FirstOrDefaultAsync();
+    }
+
 }
