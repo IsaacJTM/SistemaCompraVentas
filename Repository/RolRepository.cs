@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using ComprasVentas.Data;
 using ComprasVentas.Models;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ public class RolRepository
 
     public async Task<Rol?> GetByIdAsync(int id)
     {
-        return await _context.Roles.Include(r => r.PermisoRoles).FirstOrDefaultAsync(r => r.Id == id);
+        return await _context.Roles.Include(r => r.PermisoRoles).ThenInclude(pr => pr.Permiso).FirstOrDefaultAsync(r => r.Id == id);
     }
 
     public async Task CreateAsync(Rol rol)

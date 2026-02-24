@@ -6,7 +6,7 @@ namespace ComprasVentas.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RolControllers(IRolServices rolServices) : ControllerBase
+    public class RolController(IRolServices rolServices) : ControllerBase
     {
         private readonly IRolServices _rolServices = rolServices;
 
