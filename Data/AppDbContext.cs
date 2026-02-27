@@ -11,6 +11,8 @@ public class AppDbContext : DbContext
 
     public DbSet<Rol> Roles { get; set; }
     public DbSet<Permiso> Permisos { get; set; }
+    public DbSet<Persona> Personas {get; set;}
+    public DbSet<Usuario> Usuarios {get; set;}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,5 +34,10 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Rol>()
             .HasIndex(r => r.Nombre)
             .IsUnique();
+
+        modelBuilder.Entity<Usuario>()
+        .HasOne(u => u.Persona)
+        .WithOne(p => p.Usuario)
+        .HasForeignKey<Persona>(p => p.Id);
     }
 }

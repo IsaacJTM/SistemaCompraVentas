@@ -40,7 +40,9 @@ public class RolServices
             Descripcion = rol.Descripcion,
             Permisos = rol.PermisoRoles.Select(pr => new PermisoResponseDto{
                 Id = pr.Permiso.Id,
-                Nombre = pr.Permiso.Nombre
+                Nombre = pr.Permiso.Nombre,
+                Recurso = pr.Permiso.Recurso,
+                Accion = pr.Permiso.Accion
             }).ToList() 
         };
     }
@@ -51,7 +53,6 @@ public class RolServices
         foreach (var permisoId in dto.PermisoIds)
         {
             var permiso = await _permisoRepository.GetByIdAsync(permisoId);
-            //if(permiso == null) throw new Exception($"Permiso con ID {permisoId} no encontrado");
             if(permiso != null) permisos.Add(permiso);
         }
         var rol = new RolBuilder()

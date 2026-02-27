@@ -1,5 +1,4 @@
 using ComprasVentas.Data;
-using ComprasVentas.Models;
 using ComprasVentas.Repository;
 using ComprasVentas.Servicios;
 using ComprasVentas.Servicios.impl;

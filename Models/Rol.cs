@@ -30,6 +30,4 @@ public class Rol
     {
         _permisoRoles.Clear();
     }
-
-
 }
