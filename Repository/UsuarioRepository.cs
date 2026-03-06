@@ -17,14 +17,17 @@ public class UsuarioRepository
     public async Task<Usuario?> GetUsuarioByIdAsync(int Id)
     {
         return await _context.Usuarios
-                        .Include(u=>u.Persona)
+                        .Include(u => u.Persona)
+                        .Include(u => u.Roles)
                         .FirstOrDefaultAsync(u => u.Id == Id);
     }
 
     public async Task<List<Usuario>> GetAllAsync()
     {
         return await _context.Usuarios
-                        .Include(u => u.Persona).ToListAsync();
+                        .Include(u => u.Persona)
+                        .Include(u => u.Roles)
+                        .ToListAsync();
     }
 
     public async Task CreateAsync(Usuario usuario)

@@ -8,8 +8,10 @@ public class Rol
 
     //Relación many to many
     //public ICollection<Permiso> Permisos {get; set;} = new List<Permiso>();
-    private readonly List<PermisoRole> _permisoRoles = new();
+    private readonly List<PermisoRole> _permisoRoles = [];
     public IReadOnlyCollection<PermisoRole> PermisoRoles => _permisoRoles.AsReadOnly();
+
+    public ICollection<Usuario> Usuarios {get; set;} = new List<Usuario>();
 
     //Método para agregar un permisos al Rol (mantiene encapsulado el acceso a la lista de permisos)
     public void AddPermiso(int permisoId)

@@ -34,10 +34,46 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Rol>()
             .HasIndex(r => r.Nombre)
             .IsUnique();
+        
+        modelBuilder.Entity<Usuario>()
+            .HasMany(r => r.Roles)
+            .WithMany(p => p.Usuarios)
+            .UsingEntity(q=>q.ToTable("usuario_rol"));
 
         modelBuilder.Entity<Usuario>()
-        .HasOne(u => u.Persona)
-        .WithOne(p => p.Usuario)
-        .HasForeignKey<Persona>(p => p.Id);
+            .HasOne(u => u.Persona)
+            .WithOne(p => p.Usuario)
+            .HasForeignKey<Persona>(p => p.Id);
+
+        //Para las restricciones 
+        modelBuilder.Entity<Usuario>(e =>
+        {
+            e.Property(u => u.Nombre).IsRequired().HasMaxLength(50);
+            e.Property(u => u.Correo).IsRequired().HasMaxLength(255);
+            e.Property(u => u.Password).IsRequired().HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<Persona>( e =>
+        {
+           e.Property(p => p.Nombres).IsRequired().HasMaxLength(100);
+           e.Property(p => p.Apellidos).IsRequired().HasMaxLength(100);
+           e.Property(p => p.Genero).HasMaxLength(20);
+           e.Property(p => p.Telefono).HasMaxLength(20);
+           e.Property(p => p.Direccion).HasMaxLength(255);
+           e.Property(p => p.Nacionalidad).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<Permiso>(e =>
+        {
+           e.Property(p => p.Nombre).IsRequired().HasMaxLength(100);
+           e.Property(p => p.Recurso).HasMaxLength(100);
+           e.Property(p => p.Accion).IsRequired().HasMaxLength(100);
+        });
+
+        modelBuilder.Entity<Rol>(e =>
+        {
+           e.Property(r => r.Nombre).IsRequired().HasMaxLength(100);
+           e.Property(r => r.Descripcion).HasMaxLength(255);
+        });
     }
 }

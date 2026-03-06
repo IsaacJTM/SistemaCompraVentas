@@ -15,16 +15,28 @@ public class UsuarioService
 
     public async Task<List<UsuarioResponseDto>> GetAllAsync()
     {
-        var usuarios  = await _usuarioRepository.GetAllAsync();
-        
-        return usuarios.Select( user => MapToDto(user)).ToList();
+        try
+        {
+            var usuarios  = await _usuarioRepository.GetAllAsync();
+            return usuarios.Select( user => MapToDto(user)).ToList();
+
+        }catch(Exception ex){
+            throw new Exception("Error al obtener Usuario: ", ex);
+        }
     }
 
     public async Task<UsuarioResponseDto> GetByIdAsync(int id)
     {
-        var usuario = await _usuarioRepository.GetUsuarioByIdAsync(id);
-        if(usuario == null) return null;
-        return MapToDto(usuario); 
+        try
+        {
+            var usuario = await _usuarioRepository.GetUsuarioByIdAsync(id);
+            if(usuario == null) throw new Exception($"Usuario con ID {id} no encontrado");
+            return MapToDto(usuario); 
+
+        }catch(Exception){
+            throw;
+        }
+
     }
 
     public async Task<UsuarioResponseDto> CreateAsync(CreateUsuarioDto dto)
@@ -101,3 +113,6 @@ public class UsuarioService
         };
     }
 }
+
+
+//Debemos mejorar en la generaicón de ddocumento de al escritura. 
